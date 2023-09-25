@@ -72,6 +72,10 @@ input {
   cursor: pointer;
 }
 
+.list li button {
+  background: #ffebb3 !important;
+}
+
 .add-form button {
   text-transform: uppercase;
   background-color: #76c7ad;
