@@ -16,7 +16,18 @@ const App = () => {
     const [select, setSelect] = useState(1);
 
     const handleSubmit = (e) => {
+      if (!description) return;
       e.preventDefault();
+
+      const newItem = {
+        description,
+        select,
+        packed: false,
+        id: Date.now(),
+      };
+      // console.log(newItem);
+      setDescription("");
+      setSelect(1);
     };
 
     const handleChange = (e) => {
