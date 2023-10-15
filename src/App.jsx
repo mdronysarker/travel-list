@@ -7,11 +7,22 @@ const App = () => {
     { id: 2, description: "charger", qunatity: 1, packed: false },
   ];
 
+  const [items, setItems] = useState([]);
+
+  const handleAddItems = (item) => {
+    setItems((items) => [...items, item]);
+  };
+
+  const handleDelteItem = (id) => {
+    console.log(id);
+    setItems((items) => items.filter((item) => item.id !== id));
+  };
+
   const Logo = () => {
     return <h1>Far Way</h1>;
   };
 
-  const Form = () => {
+  const Form = ({ onAddItems }) => {
     const [description, setDescription] = useState("");
     const [select, setSelect] = useState(1);
 
@@ -26,6 +37,8 @@ const App = () => {
         id: Date.now(),
       };
       // console.log(newItem);
+      onAddItems(newItem);
+
       setDescription("");
       setSelect(1);
     };
@@ -61,12 +74,12 @@ const App = () => {
     );
   };
 
-  const Pakagelist = () => {
+  const Pakagelist = ({ items, onDelteItem }) => {
     return (
       <div className="list">
         <ul>
-          {initialItem.map((item, i) => (
-            <Item key={i} item={item} />
+          {items.map((item, i) => (
+            <Item onDelteItem={handleDelteItem} key={i} item={item} />
           ))}
         </ul>
       </div>
@@ -81,13 +94,16 @@ const App = () => {
     );
   };
 
-  const Item = ({ item }) => {
+  const Item = ({ item, onDelteItem }) => {
+    // console.log(item);
     return (
       <li>
         <span style={item.packed ? { textDecoration: "line-through" } : {}}>
-          {item.qunatity} {item.description}
+          {item.select} {item.description}
         </span>
-        <button className="button">&times;</button>
+        <button onClick={() => onDelteItem(item.id)} className="button">
+          &times;
+        </button>
       </li>
     );
   };
@@ -96,8 +112,8 @@ const App = () => {
     <>
       <div className="app">
         <Logo />
-        <Form />
-        <Pakagelist />
+        <Form onAddItems={handleAddItems} />
+        <Pakagelist onDelteItem={handleDelteItem} items={items} />
         <Status />
       </div>
     </>
