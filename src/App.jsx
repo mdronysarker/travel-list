@@ -14,8 +14,21 @@ const App = () => {
   };
 
   const handleDelteItem = (id) => {
-    console.log(id);
+    // console.log(id);
     setItems((items) => items.filter((item) => item.id !== id));
+  };
+
+  const handleToggleItem = (id) => {
+    setItems((items) =>
+      items.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              packed: !item.packed,
+            }
+          : item
+      )
+    );
   };
 
   const Logo = () => {
@@ -74,12 +87,17 @@ const App = () => {
     );
   };
 
-  const Pakagelist = ({ items, onDelteItem }) => {
+  const Pakagelist = ({ items, onDelteItem, onToggoleItem }) => {
     return (
       <div className="list">
         <ul>
           {items.map((item, i) => (
-            <Item onDelteItem={handleDelteItem} key={i} item={item} />
+            <Item
+              onDelteItem={handleDelteItem}
+              onToggoleItem={handleToggleItem}
+              key={i}
+              item={item}
+            />
           ))}
         </ul>
       </div>
@@ -94,10 +112,15 @@ const App = () => {
     );
   };
 
-  const Item = ({ item, onDelteItem }) => {
+  const Item = ({ item, onDelteItem, onToggoleItem }) => {
     // console.log(item);
     return (
       <li>
+        <input
+          type="checkbox"
+          value={item.packed}
+          onChange={() => onToggoleItem(item.id)}
+        />
         <span style={item.packed ? { textDecoration: "line-through" } : {}}>
           {item.select} {item.description}
         </span>
@@ -113,7 +136,11 @@ const App = () => {
       <div className="app">
         <Logo />
         <Form onAddItems={handleAddItems} />
-        <Pakagelist onDelteItem={handleDelteItem} items={items} />
+        <Pakagelist
+          onDelteItem={handleDelteItem}
+          items={items}
+          onToggoleItem={handleToggleItem}
+        />
         <Status />
       </div>
     </>
